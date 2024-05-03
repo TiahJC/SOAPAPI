@@ -1,0 +1,61 @@
+<definitions 
+    targetNamespace="http://example.com/userdatabase"
+    xmlns:tns="http://example.com/userdatabase"
+    xmlns="http://schemas.xmlsoap.org/wsdl/"
+    xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    
+    <types>
+        <xsd:schema targetNamespace="http://example.com/userdatabase">
+            <xsd:element name="GetUserByIDRequest">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="id" type="xsd:int"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="GetUserByIDResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="username" type="xsd:string"/>
+                        <xsd:element name="password" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </xsd:schema>
+    </types>
+
+    <message name="GetUserByIDRequest">
+        <part name="parameters" element="tns:GetUserByIDRequest"/>
+    </message>
+
+    <message name="GetUserByIDResponse">
+        <part name="parameters" element="tns:GetUserByIDResponse"/>
+    </message>
+
+    <portType name="UserDatabasePortType">
+        <operation name="GetUserByID">
+            <input message="tns:GetUserByIDRequest"/>
+            <output message="tns:GetUserByIDResponse"/>
+        </operation>
+    </portType>
+
+    <binding name="UserDatabaseBinding" type="tns:UserDatabasePortType">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <operation name="GetUserByID">
+        <soap:operation soapAction="http://example.com/userdatabase/GetUserByID"/>
+            <input>
+                <soap:body use="literal"/>
+            </input>
+            <output>
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+    </binding>
+
+    <service name="UserDatabaseService">
+        <port name="UserDatabasePort" binding="tns:UserDatabaseBinding">
+            <soap:address location="https://localhost:8000/userdatabase"/>
+        </port>
+    </service>
+    </definitions>
